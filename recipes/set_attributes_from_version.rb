@@ -37,7 +37,7 @@ when "arch"
 when "debian"
   node.default['java']['java_home'] = "/usr/lib/jvm/java-#{node['java']['jdk_version']}-#{node['java']['install_flavor']}"
   # Newer Debian & Ubuntu adds the architecture to the path
-  if node['platform'] == 'debian' && Chef::VersionConstraint.new(">= 7.0").include?(node['platform_version']) ||
+  if node['platform'] == 'debian' && ((/[^ ].*\/sid/  =~ node['platform_version']) || Chef::VersionConstraint.new(">= 7.0").include?(node['platform_version'])) ||
      node['platform'] == 'ubuntu' && Chef::VersionConstraint.new(">= 12.04").include?(node['platform_version'])
     node.default['java']['java_home'] = "#{node['java']['java_home']}-#{node['kernel']['machine'] == 'x86_64' ? 'amd64' : 'i386'}"
   end
